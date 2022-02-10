@@ -2,7 +2,6 @@ import dotenv from "dotenv"
 import { TwitterApi } from "twitter-api-v2"
 import { api as misskeyApi } from "misskey-js"
 import fetch from "node-fetch"
-import sleep from "./sleep"
 
 const { parsed } = dotenv.config()
 
@@ -21,13 +20,10 @@ const cli = new misskeyApi.APIClient({
     fetch,
 })
 
-;(async () => {
+setInterval(async () => {
     const homeTimeline = await client.v1.homeTimeline()
+    const lastTweet = (await homeTimeline.fetchLast(1)).tweets[0]
 
-    for await (const tweet of homeTimeline) {
-        const body = `${tweet.user.name}\n\n${tweet.full_text}\nhttps://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
-        await cli.request("notes/create", { text: body })
-
-        await sleep(5000)
-    }
-})()
+    const body = `${lastTweet.user.name}\n\n${lastTweet.full_text}\nhttps://twitter.com/${lastTweet.user.screen_name}/status/${lastTweet.id_str}`
+    await cli.request("notes/create", { text: body })
+}, 5000)
