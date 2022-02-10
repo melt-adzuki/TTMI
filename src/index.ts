@@ -30,10 +30,6 @@ setInterval(async () => {
 
     reversedTweets.forEach(async tweet => {
         const body = `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
-
-        if (body === previousBody) return
-        previousBody = body
-
         await misskeyClient.request("notes/create", { text: body })
         
         sleep(5000)
