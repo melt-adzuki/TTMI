@@ -1,0 +1,20 @@
+{
+  "name": "ttmi",
+  "version": "1.0.0",
+  "repository": "https://github.com/NullCatSlave/TTMI.git",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "ts-node --files src/"
+  },
+  "dependencies": {
+    "@types/node": "^17.0.17",
+    "@types/node-fetch": "2",
+    "dotenv": "^16.0.0",
+    "misskey-js": "^0.0.14",
+    "node-fetch": "2",
+    "ts-node": "^10.5.0",
+    "twitter-api-v2": "^1.10.0",
+    "typescript": "^4.5.5"
+  }
+}
