@@ -7,23 +7,30 @@ const { parsed } = dotenv.config()
 
 if (typeof parsed === "undefined") throw new Error("設定ファイルの読み込みに失敗しました。")
 
-const client = new TwitterApi({
+const twitterClient = new TwitterApi({
     appKey: parsed.APP_KEY,
     appSecret: parsed.APP_SECRET,
     accessToken: parsed.ACCESS_TOKEN,
     accessSecret: parsed.ACCESS_SECRET,
 })
 
-const cli = new misskeyApi.APIClient({
+const misskeyClient = new misskeyApi.APIClient({
     origin: parsed.ORIGIN,
     credential: parsed.CREDENTIAL,
     fetch,
 })
 
+
+let previousBody = ""
+
 setInterval(async () => {
-    const homeTimeline = await client.v1.homeTimeline()
+    const homeTimeline = await twitterClient.v1.homeTimeline()
     const lastTweet = (await homeTimeline.fetchLast(1)).tweets[0]
 
     const body = `${lastTweet.user.name}\n\n${lastTweet.full_text}\nhttps://twitter.com/${lastTweet.user.screen_name}/status/${lastTweet.id_str}`
-    await cli.request("notes/create", { text: body })
+
+    if (body === previousBody) return
+    previousBody = body
+
+    await misskeyClient.request("notes/create", { text: body })
 }, 5000)
