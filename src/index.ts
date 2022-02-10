@@ -25,7 +25,7 @@ let previousBody = ""
 
 setInterval(async () => {
     const homeTimeline = await twitterClient.v1.homeTimeline()
-    const lastTweet = (await homeTimeline.fetchLast(1)).tweets[0]
+    const lastTweet = (await homeTimeline).tweets[0]
 
     const body = `${lastTweet.user.name}\n\n${lastTweet.full_text}\nhttps://twitter.com/${lastTweet.user.screen_name}/status/${lastTweet.id_str}`
 
