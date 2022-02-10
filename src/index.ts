@@ -22,7 +22,7 @@ const misskeyClient = new misskeyApi.APIClient({
 })
 
 
-let previousReversedTweets: TweetV1[]
+let previousReversedTweets: TweetV1[] = []
 
 setInterval(async () => {
     const homeTimeline = await twitterClient.v1.homeTimeline()
@@ -35,6 +35,6 @@ setInterval(async () => {
         const body = `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
         await misskeyClient.request("notes/create", { text: body })
         
-        sleep(5000)
+        await sleep(5000)
     })
 }, 1000 * 60 * 60)
