@@ -25,12 +25,12 @@ let previousBody = ""
 
 setInterval(async () => {
     const homeTimeline = await twitterClient.v1.homeTimeline()
-    const lastTweet = (await homeTimeline).tweets[0]
+    const lastTweet = homeTimeline.tweets[0]
 
-    const body = `${lastTweet.user.name}\n\n${lastTweet.full_text}\nhttps://twitter.com/${lastTweet.user.screen_name}/status/${lastTweet.id_str}`
+    const body = `https://twitter.com/${lastTweet.user.screen_name}/status/${lastTweet.id_str}`
 
     if (body === previousBody) return
     previousBody = body
 
     await misskeyClient.request("notes/create", { text: body })
-}, 5000)
+}, 10000)
