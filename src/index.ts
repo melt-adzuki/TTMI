@@ -3,7 +3,7 @@ import { TwitterApi } from "twitter-api-v2"
 import { api as misskeyApi } from "misskey-js"
 import fetch from "node-fetch"
 
-const parsed = dotenv.config().parsed
+const { parsed } = dotenv.config()
 
 if (typeof parsed === "undefined") throw new Error("設定ファイルの読み込みに失敗しました。")
 
@@ -22,8 +22,8 @@ const cli = new misskeyApi.APIClient({
 
 ;(async () => {
     const homeTimeline = await client.v1.homeTimeline()
-
     const nextHomePage = await homeTimeline.next()
+
     console.log(nextHomePage.tweets.map(async tweet => {
         const body = `${tweet.user.name}\n\n${tweet.full_text}\nhttps://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
 
