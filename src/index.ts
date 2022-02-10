@@ -1,5 +1,5 @@
 import dotenv from "dotenv"
-import { TwitterApi } from "twitter-api-v2"
+import { TweetV1, TwitterApi } from "twitter-api-v2"
 import { api as misskeyApi } from "misskey-js"
 import fetch from "node-fetch"
 import sleep from "./sleep"
@@ -22,11 +22,14 @@ const misskeyClient = new misskeyApi.APIClient({
 })
 
 
-let previousBody = ""
+let previousReversedTweets: TweetV1[]
 
 setInterval(async () => {
     const homeTimeline = await twitterClient.v1.homeTimeline()
     const reversedTweets = homeTimeline.tweets.reverse()
+
+    if (reversedTweets === previousReversedTweets) return
+    previousReversedTweets = reversedTweets
 
     reversedTweets.forEach(async tweet => {
         const body = `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
