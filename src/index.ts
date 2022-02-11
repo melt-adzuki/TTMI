@@ -39,4 +39,4 @@ setInterval(async () => {
 
         await sleep(5000)
     }
-}, 1000 * 60 * 60)
+}, 1000 * 60)
