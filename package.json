@@ -8,9 +8,11 @@
     "start": "ts-node --files src/"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.178",
     "@types/node": "^17.0.17",
     "@types/node-fetch": "2",
     "dotenv": "^16.0.0",
+    "lodash": "^4.17.21",
     "misskey-js": "^0.0.14",
     "node-fetch": "2",
     "ts-node": "^10.5.0",

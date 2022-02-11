@@ -3,6 +3,7 @@ import { TweetV1, TwitterApi } from "twitter-api-v2"
 import { api as misskeyApi } from "misskey-js"
 import fetch from "node-fetch"
 import sleep from "./sleep"
+import _ from "lodash"
 
 const { parsed } = dotenv.config()
 
@@ -28,10 +29,12 @@ setInterval(async () => {
     const homeTimeline = await twitterClient.v1.homeTimeline()
     const reversedTweets = homeTimeline.tweets.reverse()
 
-    if (reversedTweets === previousReversedTweets) return
-    previousReversedTweets = reversedTweets
+    const difference = _.difference(previousReversedTweets, reversedTweets)
+    const newerTweets = _.pullAll(reversedTweets, difference)
 
-    for (const tweet of reversedTweets) {
+    previousReversedTweets = newerTweets
+
+    for (const tweet of newerTweets) {
         console.log(tweet)
 
         const body = `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
